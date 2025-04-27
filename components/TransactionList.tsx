@@ -1,49 +1,52 @@
 "use client";
 
+import { Trash2 } from "lucide-react";
+
 export default function TransactionList({
   transactions,
 }: {
   transactions: any[];
 }) {
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure?")) return;
+    const confirmed = confirm(
+      "Are you sure you want to delete this transaction?"
+    );
+    if (!confirmed) return;
 
-    const res = await fetch(`/api/transactions/${id}`, { method: "DELETE" });
+    await fetch(`/api/transactions/${id}`, {
+      method: "DELETE",
+    });
 
-    if (res.ok) {
-      window.location.reload(); // refresh page
-    } else {
-      alert("Failed to delete transaction");
-    }
+    window.location.reload();
   };
 
-  if (!transactions.length)
-    return <p className="text-center">No transactions yet.</p>;
-
   return (
-    <div className="mt-8 space-y-4">
-      {transactions.map((tx) => (
-        <div
-          key={tx._id}
-          className="p-4 bg-gray-50 rounded shadow-sm flex justify-between items-center"
-        >
-          <div>
-            <p className="font-medium">{tx.description}</p>
-            <p className="text-xs text-gray-500">
-              {new Date(tx.date).toLocaleDateString()}
-            </p>
-          </div>
-          <div className="flex items-center space-x-2">
-            <p className="font-semibold">₹ {tx.amount}</p>
+    <div className="mt-8">
+      <h2 className="text-xl font-semibold mb-4">Transactions</h2>
+
+      {/* ✨ Scrollable after 2 items */}
+      <div className="max-h-72 overflow-y-auto space-y-2 pr-2">
+        {transactions.map((transaction) => (
+          <div
+            key={transaction._id}
+            className="flex items-center justify-between border p-2 rounded shadow-sm"
+          >
+            <div>
+              <p className="font-medium">{transaction.description}</p>
+              <p className="text-sm text-gray-500">
+                {new Date(transaction.date).toLocaleDateString()} - ₹
+                {transaction.amount}
+              </p>
+            </div>
             <button
-              onClick={() => handleDelete(tx._id)}
-              className="text-red-500 hover:underline text-sm"
+              onClick={() => handleDelete(transaction._id)}
+              className="text-red-500 hover:text-red-700"
             >
-              Delete
+              <Trash2 size={20} />
             </button>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

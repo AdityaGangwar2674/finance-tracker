@@ -1,49 +1,62 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import TransactionForm from "@/components/TransactionForm";
 import TransactionList from "@/components/TransactionList";
 import MonthlyChart from "@/components/MonthlyCharts";
 
-async function getTransactions() {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/transactions`,
-    {
-      cache: "no-store",
-    }
-  );
-  return res.json();
-}
+export default function Home() {
+  const [transactions, setTransactions] = useState<any[]>([]);
 
-function groupByMonth(transactions: any[]) {
-  const grouped: { [key: string]: number } = {};
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      const res = await fetch("/api/transactions");
+      const data = await res.json();
+      setTransactions(data);
+    };
 
-  transactions.forEach((tx) => {
-    const month = new Date(tx.date).toLocaleString("default", {
+    fetchTransactions();
+  }, []);
+
+  // ✅ Convert transactions to monthly data
+  const monthlyData = transactions.reduce((acc: any, transaction: any) => {
+    const month = new Date(transaction.date).toLocaleString("default", {
       month: "short",
-      year: "numeric",
     });
-    grouped[month] = (grouped[month] || 0) + tx.amount;
-  });
+    const existing = acc.find((item: any) => item.month === month);
 
-  return Object.keys(grouped).map((month) => ({
-    month,
-    total: grouped[month],
-  }));
-}
-
-export default async function Home() {
-  const transactions = await getTransactions();
-  const monthlyData = groupByMonth(transactions);
+    if (existing) {
+      existing.total += transaction.amount;
+    } else {
+      acc.push({ month, total: transaction.amount });
+    }
+    return acc;
+  }, []);
 
   return (
-    <main className="max-w-4xl mx-auto py-8">
-      <h1 className="text-3xl font-bold text-center mb-8">
-        Personal Finance Tracker
-      </h1>
+    <div className="max-w-6xl mx-auto p-4 space-y-12">
+      {/* ✅ Title and Subtext */}
+      <div className="text-center space-y-2">
+        <h1 className="text-4xl font-bold text-blue-600">
+          Personal Finance Visualizer
+        </h1>
+        <p className="text-gray-500 text-md">
+          Track your spending. Stay in control.
+        </p>
+      </div>
 
-      <TransactionForm onAdd={() => {}} />
+      {/* ✅ Centered Form */}
+      <div className="flex justify-center">
+        <div className="w-full md:w-2/3 lg:w-1/2">
+          <TransactionForm />
+        </div>
+      </div>
 
-      <TransactionList transactions={transactions} />
-
-      <MonthlyChart data={monthlyData} />
-    </main>
+      {/* ✅ Two Column Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <TransactionList transactions={transactions} />
+        <MonthlyChart data={monthlyData} />
+      </div>
+    </div>
   );
 }
