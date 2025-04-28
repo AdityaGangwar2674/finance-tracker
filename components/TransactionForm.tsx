@@ -38,7 +38,7 @@ export default function TransactionForm({ onAdd }: { onAdd?: () => void }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white p-8 rounded-2xl shadow-lg flex flex-col gap-6 max-w-2xl mx-auto mt-8"
+      className="bg-white p-8 rounded-2xl shadow-lg flex flex-col gap-6 max-w-3xl mx-auto mt-8"
     >
       <h2 className="text-3xl font-bold text-center text-gray-800">
         Add New Transaction

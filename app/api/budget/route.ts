@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import Budget from "@/models/Budget";
 
+// Create a new budget
 export async function POST(request: Request) {
   try {
     await dbConnect();
@@ -30,10 +31,31 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
+// Fetch budgets for a specific month
+export async function GET(request: Request) {
   try {
     await dbConnect();
-    const budgets = await Budget.find().sort({ month: -1, category: 1 }); // sort latest month first
+
+    // Extract month query parameter from the request
+    const url = new URL(request.url);
+    const month = url.searchParams.get("month");
+
+    if (!month) {
+      return NextResponse.json(
+        { error: "Month query parameter is required" },
+        { status: 400 }
+      );
+    }
+
+    const budgets = await Budget.find({ month }).sort({ category: 1 }); // Sort by category
+
+    if (!budgets.length) {
+      return NextResponse.json(
+        { message: "No budgets found for this month" },
+        { status: 404 }
+      );
+    }
+
     return NextResponse.json(budgets);
   } catch (error) {
     console.error(error);

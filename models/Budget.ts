@@ -11,7 +11,7 @@ const BudgetSchema = new Schema(
       required: true,
     },
     month: {
-      type: String, // Format: YYYY-MM
+      type: String, 
       required: true,
     },
   },
