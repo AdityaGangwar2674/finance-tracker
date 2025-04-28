@@ -29,15 +29,25 @@ export default function TransactionList({
         {transactions.map((transaction) => (
           <div
             key={transaction._id}
-            className="flex items-center justify-between border p-2 rounded shadow-sm"
+            className="flex items-center justify-between border p-3 rounded shadow-sm bg-white"
           >
-            <div>
+            <div className="flex flex-col">
+              {/* Description */}
               <p className="font-medium">{transaction.description}</p>
+
+              {/* Category */}
+              <p className="text-xs text-blue-600 capitalize">
+                {transaction.category}
+              </p>
+
+              {/* Date + Amount */}
               <p className="text-sm text-gray-500">
-                {new Date(transaction.date).toLocaleDateString()} - ₹
+                {new Date(transaction.date).toLocaleDateString()} — ₹
                 {transaction.amount}
               </p>
             </div>
+
+            {/* Delete Button */}
             <button
               onClick={() => handleDelete(transaction._id)}
               className="text-red-500 hover:text-red-700"

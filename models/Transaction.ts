@@ -1,21 +1,37 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose from "mongoose";
 
-export interface TransactionType extends Document {
-  amount: number;
-  date: Date;
-  description: string;
-  category?: string; // 👈 optional
-}
-
-const TransactionSchema = new Schema<TransactionType>(
+const TransactionSchema = new mongoose.Schema(
   {
-    amount: { type: Number, required: true },
-    date: { type: Date, required: true },
-    description: { type: String, required: true },
-    category: { type: String }, // 👈 optional now
+    amount: {
+      type: Number,
+      required: true,
+    },
+    date: {
+      type: Date,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    category: {
+      type: String,
+      required: true,
+      enum: [
+        "Food",
+        "Travel",
+        "Shopping",
+        "Utilities",
+        "Entertainment",
+        "Other",
+      ],
+    },
   },
   { timestamps: true }
 );
 
-export default mongoose.models.Transaction ||
-  mongoose.model<TransactionType>("Transaction", TransactionSchema);
+const Transaction =
+  mongoose.models.Transaction ||
+  mongoose.model("Transaction", TransactionSchema);
+
+export default Transaction;

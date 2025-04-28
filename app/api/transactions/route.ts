@@ -5,9 +5,9 @@ import Transaction from "@/models/Transaction";
 export async function POST(request: Request) {
   try {
     await dbConnect();
-    const { amount, date, description } = await request.json();
+    const { amount, date, description, category } = await request.json();
 
-    if (!amount || !date || !description) {
+    if (!amount || !date || !description || !category) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 
@@ -15,6 +15,7 @@ export async function POST(request: Request) {
       amount,
       date,
       description,
+      category,
     });
 
     return NextResponse.json(transaction, { status: 201 });
