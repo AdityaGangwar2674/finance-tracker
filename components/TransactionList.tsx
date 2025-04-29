@@ -25,7 +25,6 @@ export default function TransactionList({
       }
     } else {
       setConfirmDelete(id);
-      // Reset after 3 seconds
       setTimeout(() => {
         setConfirmDelete(null);
       }, 3000);
@@ -41,10 +40,8 @@ export default function TransactionList({
     return matchesSearch && matchesCategory;
   });
 
-  // Extract unique categories
   const categories = ["", ...new Set(transactions.map((t) => t.category))];
 
-  // Get category color class
   const getCategoryColor = (category: string) => {
     const colors: { [key: string]: string } = {
       Food: "bg-orange-100 text-orange-800",
@@ -59,9 +56,7 @@ export default function TransactionList({
 
   return (
     <div className="w-full">
-      {/* Search and Filter */}
       <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
-        {/* Search Input */}
         <div className="relative flex-grow">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Search className="h-5 w-5 text-gray-400" />
@@ -75,7 +70,6 @@ export default function TransactionList({
           />
         </div>
 
-        {/* Category Filter */}
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Filter className="h-5 w-5 text-gray-400" />
@@ -112,7 +106,6 @@ export default function TransactionList({
         </div>
       </div>
 
-      {/* Transaction List */}
       <div
         className={`space-y-3 overflow-y-auto ${
           transactions.length > 5 ? "max-h-96 pr-2" : ""
@@ -133,7 +126,6 @@ export default function TransactionList({
                 className="flex items-center justify-between p-4 rounded-lg bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="flex flex-col">
-                  {/* Date */}
                   <div className="text-xs text-gray-500 mb-1">
                     {new Date(transaction.date).toLocaleDateString(undefined, {
                       year: "numeric",
@@ -142,12 +134,10 @@ export default function TransactionList({
                     })}
                   </div>
 
-                  {/* Description */}
                   <div className="font-medium text-gray-800">
                     {transaction.description}
                   </div>
 
-                  {/* Category Badge */}
                   <div className="mt-1">
                     <span
                       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getCategoryColor(
@@ -160,12 +150,10 @@ export default function TransactionList({
                 </div>
 
                 <div className="flex items-center">
-                  {/* Amount */}
                   <div className="font-semibold text-lg text-gray-900 mr-4">
                     ₹{transaction.amount}
                   </div>
 
-                  {/* Delete Button */}
                   <button
                     onClick={() => handleDelete(transaction._id)}
                     className={`p-1.5 rounded-full ${

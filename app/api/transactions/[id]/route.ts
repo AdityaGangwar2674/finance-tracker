@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import Transaction from "@/models/Transaction";
 
-// PATCH - Update a transaction
 export async function PATCH(
   request: Request,
   { params }: { params: { id: string } }
@@ -35,7 +34,6 @@ export async function PATCH(
   }
 }
 
-// DELETE - Remove a transaction
 export async function DELETE(
   request: Request,
   { params }: { params: { id: string } }

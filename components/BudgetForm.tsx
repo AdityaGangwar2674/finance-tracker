@@ -35,7 +35,6 @@ const BudgetForm = ({ onAdd }: { onAdd: () => void }) => {
       const data = await response.json();
 
       if (response.ok) {
-        // Show success message
         const successMessage = document.getElementById("success-message");
         if (successMessage) {
           successMessage.classList.remove("hidden");
@@ -65,7 +64,6 @@ const BudgetForm = ({ onAdd }: { onAdd: () => void }) => {
         Monthly Budget
       </h2>
 
-      {/* Success Message */}
       <div
         id="success-message"
         className="hidden bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded"
@@ -95,7 +93,6 @@ const BudgetForm = ({ onAdd }: { onAdd: () => void }) => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Category Field */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">
             Category
@@ -135,7 +132,6 @@ const BudgetForm = ({ onAdd }: { onAdd: () => void }) => {
           </div>
         </div>
 
-        {/* Amount Field */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">
             Budget Amount
@@ -157,7 +153,6 @@ const BudgetForm = ({ onAdd }: { onAdd: () => void }) => {
           </div>
         </div>
 
-        {/* Month Field */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">
             Month
@@ -175,7 +170,6 @@ const BudgetForm = ({ onAdd }: { onAdd: () => void }) => {
           </div>
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           disabled={isSubmitting}

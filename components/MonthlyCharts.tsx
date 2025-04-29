@@ -16,7 +16,6 @@ export default function MonthlyChart({
 }: {
   data: { month: string; total: number }[];
 }) {
-  // Sort data by month names
   const monthOrder = [
     "Jan",
     "Feb",
@@ -36,13 +35,11 @@ export default function MonthlyChart({
     (a, b) => monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month)
   );
 
-  // Calculate average expense
   const average =
     data.length > 0
       ? data.reduce((sum, item) => sum + item.total, 0) / data.length
       : 0;
 
-  // Custom tooltip component
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
@@ -55,7 +52,6 @@ export default function MonthlyChart({
     return null;
   };
 
-  // Generate gradient color based on whether the value is above average
   const getBarColor = (value: number) => {
     return value > average ? "#ef4444" : "#3b82f6";
   };
@@ -110,7 +106,6 @@ export default function MonthlyChart({
                 ))}
               </Bar>
 
-              {/* Average line - rendered as an extra Bar series with zero width */}
               {average > 0 && (
                 <Bar
                   dataKey={() => average}
@@ -126,7 +121,6 @@ export default function MonthlyChart({
             </BarChart>
           </ResponsiveContainer>
 
-          {/* Average indicator */}
           <div className="flex justify-end mt-2">
             <div className="flex items-center text-sm text-gray-500">
               <span className="inline-block w-3 h-0.5 bg-gray-400 mr-1.5 border-dashed"></span>

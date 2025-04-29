@@ -60,7 +60,6 @@ export default function TransactionForm({ onAdd }: { onAdd?: () => void }) {
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Amount Field */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">
             Amount
@@ -83,7 +82,6 @@ export default function TransactionForm({ onAdd }: { onAdd?: () => void }) {
           </div>
         </div>
 
-        {/* Date Field */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">
             Date
@@ -102,7 +100,6 @@ export default function TransactionForm({ onAdd }: { onAdd?: () => void }) {
           </div>
         </div>
 
-        {/* Description Field */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">
             Description
@@ -122,7 +119,6 @@ export default function TransactionForm({ onAdd }: { onAdd?: () => void }) {
           </div>
         </div>
 
-        {/* Category Field */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">
             Category
@@ -162,7 +158,6 @@ export default function TransactionForm({ onAdd }: { onAdd?: () => void }) {
           </div>
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           disabled={isSubmitting}

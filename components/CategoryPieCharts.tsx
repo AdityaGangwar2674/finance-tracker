@@ -18,7 +18,6 @@ export default function CategoryPieChart({
 }) {
   const [activeIndex, setActiveIndex] = useState<number | undefined>(undefined);
 
-  // Category colors with enhanced palette
   const CATEGORY_COLORS: { [key: string]: string } = {
     Food: "#f97316", // orange-500
     Travel: "#10b981", // emerald-500
@@ -28,13 +27,10 @@ export default function CategoryPieChart({
     Other: "#6b7280", // gray-500
   };
 
-  // Sort data by total amount
   const sortedData = [...data].sort((a, b) => b.total - a.total);
 
-  // Calculate total expenses
   const totalExpenses = data.reduce((sum, item) => sum + item.total, 0);
 
-  // Custom tooltip component
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const percent = ((payload[0].value / totalExpenses) * 100).toFixed(1);
@@ -51,7 +47,6 @@ export default function CategoryPieChart({
     return null;
   };
 
-  // Active shape renderer
   const renderActiveShape = (props: any) => {
     const {
       cx,
@@ -120,7 +115,6 @@ export default function CategoryPieChart({
     );
   };
 
-  // Custom legend
   const renderLegend = (props: any) => {
     const { payload } = props;
     return (
@@ -166,7 +160,6 @@ export default function CategoryPieChart({
         <>
           <ResponsiveContainer width="100%" height={400}>
             <PieChart>
-              {/* Main pie chart */}
               <Pie
                 data={sortedData}
                 cx="50%"

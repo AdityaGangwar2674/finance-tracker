@@ -29,7 +29,7 @@ export default function Home() {
     if (Array.isArray(data)) {
       setBudgets(data);
     } else {
-      setBudgets([]); // Fallback to empty array if not an array
+      setBudgets([]);
     }
   };
 
@@ -92,7 +92,6 @@ export default function Home() {
 
   return (
     <div className="bg-gradient-to-br from-blue-50 to-indigo-50 min-h-screen">
-      {/* Header */}
       <header className="bg-white shadow-md py-6">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col items-center justify-center space-y-6">
@@ -105,7 +104,6 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Navigation Tabs */}
             <nav className="flex space-x-1 bg-gray-100 p-1 rounded-xl">
               {TABS.map((tab) => (
                 <button
@@ -126,12 +124,9 @@ export default function Home() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-10">
-        {/* Dashboard View */}
         {activeTab === "dashboard" && (
           <div className="space-y-8">
-            {/* Summary Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* Total Expenses Card */}
               <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
                 <h3 className="text-gray-500 font-medium text-sm uppercase tracking-wider">
                   Total Expenses
@@ -141,7 +136,6 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* Top Category Card */}
               <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
                 <h3 className="text-gray-500 font-medium text-sm uppercase tracking-wider">
                   Top Category
@@ -157,7 +151,6 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* Budget Status Card */}
               <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
                 <h3 className="text-gray-500 font-medium text-sm uppercase tracking-wider">
                   On Budget
@@ -179,7 +172,6 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* Over Budget Card */}
               <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
                 <h3 className="text-gray-500 font-medium text-sm uppercase tracking-wider">
                   Over Budget
@@ -206,9 +198,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Recent Transactions and Monthly Chart */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Transactions List */}
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 h-full overflow-auto">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center sticky top-0 bg-white pt-1 pb-2">
                   <span className="w-2 h-6 bg-blue-600 rounded-full mr-2"></span>
@@ -219,7 +209,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Monthly Chart */}
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                   <span className="w-2 h-6 bg-blue-600 rounded-full mr-2"></span>
@@ -231,7 +220,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Category Pie Chart */}
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
               <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                 <span className="w-2 h-6 bg-blue-600 rounded-full mr-2"></span>
@@ -240,7 +228,6 @@ export default function Home() {
               <CategoryPieChart data={categoryData} />
             </div>
 
-            {/* Budget vs Actual */}
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
               <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
                 <h3 className="text-lg font-semibold text-gray-800 flex items-center">
@@ -278,24 +265,20 @@ export default function Home() {
           </div>
         )}
 
-        {/* Transaction Form */}
         {activeTab === "transactions" && (
           <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 max-w-2xl mx-auto">
             <TransactionForm onAdd={fetchTransactions} />
           </div>
         )}
 
-        {/* Budget Form */}
         {activeTab === "budget" && (
           <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 max-w-2xl mx-auto">
             <BudgetForm onAdd={fetchBudgets} />
           </div>
         )}
 
-        {/* Analytics View */}
         {activeTab === "analytics" && (
           <div className="space-y-8">
-            {/* Monthly Spending Trends */}
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
               <h3 className="text-lg font-semibold text-gray-800 mb-6 flex items-center">
                 <span className="w-2 h-6 bg-blue-600 rounded-full mr-2"></span>
@@ -304,9 +287,7 @@ export default function Home() {
               <MonthlyChart data={monthlyData} />
             </div>
 
-            {/* Two-column layout for Category and Budget */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Category Breakdown */}
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col h-full">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                   <span className="w-2 h-6 bg-blue-600 rounded-full mr-2"></span>
@@ -317,7 +298,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Budget Performance */}
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col h-full">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-lg font-semibold text-gray-800 flex items-center">
@@ -337,7 +317,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* All Transactions */}
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
               <h3 className="text-lg font-semibold text-gray-800 mb-6 flex items-center">
                 <span className="w-2 h-6 bg-blue-600 rounded-full mr-2"></span>
@@ -349,7 +328,6 @@ export default function Home() {
         )}
       </main>
 
-      {/* Footer */}
       <footer className="bg-white py-6 mt-12 border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
           <p>Finesse Finance © 2025 | Your Personal Finance Companion</p>

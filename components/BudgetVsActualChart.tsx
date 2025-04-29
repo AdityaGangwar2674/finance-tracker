@@ -23,7 +23,6 @@ interface BudgetData {
 export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  // Calculate percentage for each category
   const enrichedData = data.map((item) => {
     const percentage = item.budget > 0 ? (item.actual / item.budget) * 100 : 0;
     return {
@@ -33,12 +32,10 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
     };
   });
 
-  // Sort data by percentage (descending)
   const sortedData = [...enrichedData].sort(
     (a, b) => b.percentage - a.percentage
   );
 
-  // Calculate summary statistics
   const totalBudget = sortedData.reduce((sum, item) => sum + item.budget, 0);
   const totalSpent = sortedData.reduce((sum, item) => sum + item.actual, 0);
   const totalRemaining = totalBudget - totalSpent;
@@ -48,7 +45,6 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
     (item) => item.actual > item.budget
   ).length;
 
-  // Custom tooltip component
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
@@ -108,7 +104,6 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
     return null;
   };
 
-  // Create custom legend
   const renderLegend = (props: any) => {
     const { payload } = props;
 
@@ -132,12 +127,10 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
     );
   };
 
-  // Function to determine bar color based on whether actual is over budget
   const getBarFill = (actual: number, budget: number) => {
     return actual > budget ? "#ef4444" : "#10b981";
   };
 
-  // Progress bar component for overall budget usage
   const BudgetProgressBar = ({ percentage }: { percentage: number }) => {
     const barColor = percentage > 100 ? "bg-red-500" : "bg-blue-500";
     const cappedPercentage = Math.min(percentage, 100);
@@ -160,7 +153,6 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
         </div>
       ) : (
         <div className="flex flex-col h-full">
-          {/* Overall Budget Summary */}
           <div className="grid grid-cols-2 gap-2 mb-3">
             <div className="text-center p-2 bg-blue-50 rounded-lg shadow-sm border border-blue-100">
               <p className="text-xs font-medium text-blue-600 uppercase tracking-wide">
@@ -227,7 +219,6 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
             </div>
           </div>
 
-          {/* Chart - Flex grow to fill available space */}
           <div className="flex-grow min-h-0">
             <ResponsiveContainer width="100%" height="100%" minHeight={200}>
               <BarChart
@@ -271,7 +262,6 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
                   height={30}
                 />
 
-                {/* Budget bars */}
                 <Bar
                   dataKey="budget"
                   fill="#3b82f6"
@@ -280,7 +270,6 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
                   fillOpacity={0.7}
                 />
 
-                {/* Actual expense bars */}
                 <Bar
                   dataKey="actual"
                   name="Actual"
@@ -295,13 +284,11 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
                   ))}
                 </Bar>
 
-                {/* Reference line */}
                 <ReferenceLine y={0} stroke="#f1f5f9" strokeWidth={2} />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
-          {/* Additional Statistics - Compact version */}
           <div className="grid grid-cols-3 gap-2 mt-3">
             <div className="text-center p-2 rounded-lg bg-amber-50 border border-amber-100">
               <p className="text-xs font-medium text-amber-600 uppercase tracking-wide">
