@@ -5,7 +5,7 @@ import Budget from "@/models/Budget";
 export async function POST(request: Request) {
   try {
     await dbConnect();
-    const { category, amount, month } = await request.json();
+    const { category, amount, month, year } = await request.json();
 
     if (!category || !amount || !month) {
       return NextResponse.json(
@@ -14,21 +14,29 @@ export async function POST(request: Request) {
       );
     }
 
-    const budget = await Budget.create({
-      category,
-      amount,
-      month,
-    });
+    const existingBudget = await Budget.findOne({ category, month, year });
 
-    return NextResponse.json(budget, { status: 201 });
+    if (existingBudget) {
+      existingBudget.amount += amount;
+      await existingBudget.save();
+
+      return NextResponse.json(
+        { message: "Budget updated", budget: existingBudget },
+        { status: 200 }
+      );
+    } else {
+      const budget = await Budget.create({ category, amount, month, year });
+      return NextResponse.json(budget, { status: 201 });
+    }
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { error: "Failed to create budget" },
+      { error: "Failed to create or update budget" },
       { status: 500 }
     );
   }
 }
+
 export async function GET(request: Request) {
   try {
     await dbConnect();
@@ -43,7 +51,7 @@ export async function GET(request: Request) {
       );
     }
 
-    const budgets = await Budget.find({ month }).sort({ category: 1 }); 
+    const budgets = await Budget.find({ month }).sort({ category: 1 });
     if (!budgets.length) {
       return NextResponse.json(
         { message: "No budgets found for this month" },
