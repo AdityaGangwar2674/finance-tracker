@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, DollarSign, Tag, BarChart3 } from "lucide-react";
+import { Calendar, IndianRupee, Tag, BarChart3 } from "lucide-react";
 
 const BudgetForm = ({ onAdd }: { onAdd: () => void }) => {
   const [category, setCategory] = useState("");
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<number>();
   const [month, setMonth] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -138,17 +138,14 @@ const BudgetForm = ({ onAdd }: { onAdd: () => void }) => {
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <DollarSign className="h-5 w-5 text-gray-400" />
-            </div>
-            <div className="absolute inset-y-0 left-11 flex items-center pointer-events-none">
-              <span className="text-gray-500">₹</span>
+              <IndianRupee className="h-5 w-5 text-gray-400" />
             </div>
             <input
               type="number"
               value={amount}
               onChange={(e) => setAmount(Number(e.target.value))}
               placeholder="0.00"
-              className="block w-full pl-16 pr-3 py-3 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-blue-600 bg-gray-50 rounded-lg"
+              className="block w-full pl-12 pr-3 py-3 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-blue-600 bg-gray-50 rounded-lg"
             />
           </div>
         </div>
