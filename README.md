@@ -2,7 +2,7 @@
 
 A simple web application to help users track personal finances, monitor spending habits, and manage budgets through an intuitive interface and visual charts.
 
-> **Live Demo:** [https://finance-tracker-aditya.vercel.app](https://finance-tracker-aditya.vercel.app)  
+
 
 ---
 
