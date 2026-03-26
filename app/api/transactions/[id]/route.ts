@@ -4,11 +4,11 @@ import Transaction from "@/models/Transaction";
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await dbConnect();
-    const { id } = params;
+    const { id } = await params;
     const { amount, date, description } = await request.json();
 
     const updated = await Transaction.findByIdAndUpdate(
@@ -36,11 +36,11 @@ export async function PATCH(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await dbConnect();
-    const { id } = params;
+    const { id } = await params;
 
     const deleted = await Transaction.findByIdAndDelete(id);
 
