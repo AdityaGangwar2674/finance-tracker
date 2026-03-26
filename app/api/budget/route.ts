@@ -7,7 +7,8 @@ export async function POST(request: Request) {
     await dbConnect();
     const { category, amount, month, year } = await request.json();
 
-    if (!category || !amount || !month) {
+    // Validate all required fields
+    if (!category || !amount || !month || !year) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -19,7 +20,6 @@ export async function POST(request: Request) {
     if (existingBudget) {
       existingBudget.amount += amount;
       await existingBudget.save();
-
       return NextResponse.json(
         { message: "Budget updated", budget: existingBudget },
         { status: 200 }
