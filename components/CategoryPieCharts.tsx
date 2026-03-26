@@ -35,12 +35,12 @@ export default function CategoryPieChart({
     if (active && payload && payload.length) {
       const percent = ((payload[0].value / totalExpenses) * 100).toFixed(1);
       return (
-        <div className="bg-white p-4 shadow-lg rounded-lg border border-gray-100">
-          <p className="text-gray-600 font-medium">{payload[0].name}</p>
-          <p className="text-lg font-bold text-blue-600">
+        <div className="bg-white dark:bg-zinc-800 p-4 shadow-lg rounded-lg border border-gray-100 dark:border-zinc-700">
+          <p className="text-gray-600 dark:text-zinc-200 font-medium">{payload[0].name}</p>
+          <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
             ₹{payload[0].value.toLocaleString()}
           </p>
-          <p className="text-sm text-gray-500">{percent}% of total</p>
+          <p className="text-sm text-gray-500 dark:text-zinc-400">{percent}% of total</p>
         </div>
       );
     }
@@ -123,7 +123,7 @@ export default function CategoryPieChart({
           <li
             key={`item-${index}`}
             className={`flex items-center cursor-pointer px-3 py-1.5 rounded-full transition ${
-              activeIndex === index ? "bg-gray-100" : "hover:bg-gray-50"
+              activeIndex === index ? "bg-gray-100 dark:bg-zinc-800" : "hover:bg-gray-50 dark:hover:bg-zinc-800/50"
             }`}
             onClick={() =>
               setActiveIndex(activeIndex === index ? undefined : index)
@@ -133,7 +133,7 @@ export default function CategoryPieChart({
               className="w-3 h-3 rounded-full mr-2"
               style={{ backgroundColor: entry.color }}
             />
-            <span className="text-sm font-medium text-gray-700">
+            <span className="text-sm font-medium text-gray-700 dark:text-zinc-300">
               {entry.value}
             </span>
           </li>
@@ -153,8 +153,8 @@ export default function CategoryPieChart({
   return (
     <div className="w-full h-full">
       {data.length === 0 ? (
-        <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg border border-dashed border-gray-300">
-          <p className="text-gray-500">No expense data available</p>
+        <div className="h-64 flex items-center justify-center bg-gray-50 dark:bg-zinc-800/30 rounded-lg border border-dashed border-gray-300 dark:border-zinc-700">
+          <p className="text-gray-500 dark:text-zinc-400">No expense data available</p>
         </div>
       ) : (
         <>
@@ -191,26 +191,26 @@ export default function CategoryPieChart({
           {/* Summary */}
           <div className="flex flex-wrap justify-center gap-6 mt-4">
             <div className="text-center">
-              <p className="text-sm text-gray-500 uppercase tracking-wide">
+              <p className="text-sm text-gray-500 dark:text-zinc-400 uppercase tracking-wide">
                 Total Expenses
               </p>
-              <p className="text-2xl font-bold text-blue-600">
+              <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                 ₹{totalExpenses.toLocaleString()}
               </p>
             </div>
             <div className="text-center">
-              <p className="text-sm text-gray-500 uppercase tracking-wide">
+              <p className="text-sm text-gray-500 dark:text-zinc-400 uppercase tracking-wide">
                 Top Category
               </p>
-              <p className="text-2xl font-bold text-blue-600">
+              <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                 {sortedData.length > 0 ? sortedData[0].category : "N/A"}
               </p>
             </div>
             <div className="text-center">
-              <p className="text-sm text-gray-500 uppercase tracking-wide">
+              <p className="text-sm text-gray-500 dark:text-zinc-400 uppercase tracking-wide">
                 Categories
               </p>
-              <p className="text-2xl font-bold text-blue-600">
+              <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                 {sortedData.length}
               </p>
             </div>
