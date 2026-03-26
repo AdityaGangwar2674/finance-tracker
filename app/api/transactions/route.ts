@@ -1,10 +1,16 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import Transaction from "@/models/Transaction";
+import { currentUserId } from "@/lib/auth";
 
 export async function POST(request: Request) {
   try {
     await dbConnect();
+    const userId = await currentUserId();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { amount, date, description, category } = await request.json();
 
     if (!amount || !date || !description || !category) {
@@ -16,6 +22,7 @@ export async function POST(request: Request) {
       date,
       description,
       category,
+      userId,
     });
 
     return NextResponse.json(transaction, { status: 201 });
@@ -31,7 +38,12 @@ export async function POST(request: Request) {
 export async function GET() {
   try {
     await dbConnect();
-    const transactions = await Transaction.find().sort({ date: -1 });
+    const userId = await currentUserId();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const transactions = await Transaction.find({ userId }).sort({ date: -1 });
     return NextResponse.json(transactions);
   } catch (error) {
     console.error(error);
