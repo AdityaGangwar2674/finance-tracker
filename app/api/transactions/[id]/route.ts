@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import Transaction from "@/models/Transaction";
+import { currentUserId } from "@/lib/auth";
 
 export async function PATCH(
   request: Request,
@@ -8,11 +9,16 @@ export async function PATCH(
 ) {
   try {
     await dbConnect();
+    const userId = await currentUserId();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { id } = await params;
     const { amount, date, description } = await request.json();
 
-    const updated = await Transaction.findByIdAndUpdate(
-      id,
+    const updated = await Transaction.findOneAndUpdate(
+      { _id: id, userId },
       { amount, date, description },
       { new: true }
     );
@@ -40,9 +46,14 @@ export async function DELETE(
 ) {
   try {
     await dbConnect();
+    const userId = await currentUserId();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { id } = await params;
 
-    const deleted = await Transaction.findByIdAndDelete(id);
+    const deleted = await Transaction.findOneAndDelete({ _id: id, userId });
 
     if (!deleted) {
       return NextResponse.json(
