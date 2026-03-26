@@ -138,8 +138,7 @@ export default function Home() {
     return budgets.map((budget: any) => {
       const actualSpending = transactions
         .filter(
-          (t: any) =>
-            t.category === budget.category && isSameMonth(t.date),
+          (t: any) => t.category === budget.category && isSameMonth(t.date),
         )
         .reduce((sum: number, transaction: any) => sum + transaction.amount, 0);
       return {
@@ -158,7 +157,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-zinc-950 dark:to-zinc-900 min-h-screen transition-colors duration-300">
+    <div className="bg-linear-to-br from-blue-50 to-indigo-50 dark:from-zinc-950 dark:to-zinc-900 min-h-screen transition-colors duration-300">
       <header className="bg-white dark:bg-zinc-900 shadow-sm dark:shadow-zinc-800/50 py-6 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between mb-8 sm:mb-0">
@@ -170,7 +169,7 @@ export default function Home() {
           </div>
           <div className="flex flex-col items-center justify-center space-y-6 mt-4 sm:mt-0">
             <div className="text-center">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+              <h1 className="text-4xl font-bold bg-linear-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
                 Finesse Finance
               </h1>
               <p className="text-gray-500 mt-2">
@@ -205,7 +204,7 @@ export default function Home() {
                 <h3 className="text-gray-500 font-medium text-sm uppercase tracking-wider">
                   This Month
                 </h3>
-                <p className="text-3xl font-bold mt-2 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                <p className="text-3xl font-bold mt-2 bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                   ₹{monthlyExpenses.toLocaleString()}
                 </p>
                 <p className="text-xs text-gray-400 dark:text-zinc-500 mt-1">
@@ -217,7 +216,7 @@ export default function Home() {
                 <h3 className="text-gray-500 font-medium text-sm uppercase tracking-wider">
                   Top Category
                 </h3>
-                <p className="text-3xl font-bold mt-2 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                <p className="text-3xl font-bold mt-2 bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                   {topCategoryThisMonth}
                 </p>
                 <p className="text-xs text-gray-400 dark:text-zinc-500 mt-1">
@@ -229,13 +228,12 @@ export default function Home() {
                 <h3 className="text-gray-500 font-medium text-sm uppercase tracking-wider">
                   On Budget
                 </h3>
-                <p className="text-3xl font-bold mt-2 bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent">
+                <p className="text-3xl font-bold mt-2 bg-linear-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent">
                   {budgets.filter((budget: any) => {
                     const actualSpending = transactions
                       .filter(
                         (t: any) =>
-                          t.category === budget.category &&
-                          isSameMonth(t.date),
+                          t.category === budget.category && isSameMonth(t.date),
                       )
                       .reduce(
                         (sum: number, transaction: any) =>
@@ -257,13 +255,12 @@ export default function Home() {
                 <h3 className="text-gray-500 font-medium text-sm uppercase tracking-wider">
                   Over Budget
                 </h3>
-                <p className="text-3xl font-bold mt-2 bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
+                <p className="text-3xl font-bold mt-2 bg-linear-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
                   {budgets.filter((budget: any) => {
                     const actualSpending = transactions
                       .filter(
                         (t: any) =>
-                          t.category === budget.category &&
-                          isSameMonth(t.date),
+                          t.category === budget.category && isSameMonth(t.date),
                       )
                       .reduce(
                         (sum: number, transaction: any) =>
@@ -282,7 +279,7 @@ export default function Home() {
                 <h3 className="text-gray-500 font-medium text-sm uppercase tracking-wider">
                   Avg Daily Spend
                 </h3>
-                <p className="text-3xl font-bold mt-2 bg-gradient-to-r from-violet-500 to-purple-600 bg-clip-text text-transparent">
+                <p className="text-3xl font-bold mt-2 bg-linear-to-r from-violet-500 to-purple-600 bg-clip-text text-transparent">
                   ₹{Math.round(avgDailySpend).toLocaleString()}
                 </p>
                 <p className="text-xs text-gray-400 dark:text-zinc-500 mt-1">
@@ -297,20 +294,23 @@ export default function Home() {
                   <span className="w-2 h-6 bg-blue-600 rounded-full mr-2"></span>
                   Recent Transactions
                 </h3>
-                <div className="max-h-[600px] overflow-y-auto pr-1">
+                <div className="max-h-150 overflow-y-auto pr-1">
                   <TransactionList
                     transactions={[...transactions]
-                      .sort(
-                        (a, b) => {
-                          const dateA = new Date(a.date).getTime();
-                          const dateB = new Date(b.date).getTime();
-                          if (dateA === dateB) {
-                            return new Date(b.updatedAt || b.createdAt || 0).getTime() - new Date(a.updatedAt || a.createdAt || 0).getTime();
-                          }
-                          return dateB - dateA;
+                      .sort((a, b) => {
+                        const dateA = new Date(a.date).getTime();
+                        const dateB = new Date(b.date).getTime();
+                        if (dateA === dateB) {
+                          return (
+                            new Date(
+                              b.updatedAt || b.createdAt || 0,
+                            ).getTime() -
+                            new Date(a.updatedAt || a.createdAt || 0).getTime()
+                          );
                         }
-                      )
-                      .slice(0, 10)}
+                        return dateB - dateA;
+                      })
+                      .slice(0, 5)}
                     onDelete={() => {
                       fetchTransactions();
                       addToast("Transaction deleted", "info");
@@ -356,8 +356,7 @@ export default function Home() {
                   const actualSpending = transactions
                     .filter(
                       (t: any) =>
-                        t.category === budget.category &&
-                        isSameMonth(t.date),
+                        t.category === budget.category && isSameMonth(t.date),
                     )
                     .reduce(
                       (sum: number, transaction: any) =>
@@ -413,7 +412,7 @@ export default function Home() {
                   <span className="w-2 h-6 bg-blue-600 rounded-full mr-2"></span>
                   Category Breakdown
                 </h3>
-                <div className="flex-grow">
+                <div className="grow">
                   <CategoryPieChart data={categoryData} />
                 </div>
               </div>
@@ -431,7 +430,7 @@ export default function Home() {
                     className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
                   />
                 </div>
-                <div className="flex-grow overflow-hidden">
+                <div className="grow overflow-hidden">
                   <BudgetVsActualChart data={getBudgetVsActualData()} />
                 </div>
               </div>
