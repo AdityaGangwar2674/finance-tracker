@@ -9,8 +9,11 @@ import BudgetForm from "@/components/BudgetForm";
 import BudgetVsActualChart from "@/components/BudgetVsActualChart";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ToastContainer, useToast } from "@/components/Toast";
+import { UserMenu } from "@/components/UserMenu";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const [user, setUser] = useState<any>(null);
   const [transactions, setTransactions] = useState<any[]>([]);
   const [budgets, setBudgets] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -20,35 +23,57 @@ export default function Home() {
   });
   const [activeTab, setActiveTab] = useState<string>("dashboard");
   const { toasts, addToast, removeToast } = useToast();
+  const router = useRouter();
+  const isSameMonth = (date: string) => {
+    const d = new Date(date);
+    return (
+      d.getFullYear() === parseInt(selectedMonth.split("-")[0]) &&
+      d.getMonth() + 1 === parseInt(selectedMonth.split("-")[1])
+    );
+  };
 
   const fetchTransactions = useCallback(async () => {
     try {
       const res = await fetch("/api/transactions");
+      if (res.status === 401) return router.push("/login");
       const data = await res.json();
       setTransactions(data);
     } catch {
       addToast("Failed to load transactions", "error");
     }
-  }, []);
+  }, [router, addToast]);
 
   const fetchBudgets = useCallback(async () => {
     if (!selectedMonth) return;
     try {
       const res = await fetch(`/api/budget?month=${selectedMonth}`);
+      if (res.status === 401) return router.push("/login");
       const data = await res.json();
       if (Array.isArray(data)) setBudgets(data);
       else setBudgets([]);
     } catch {
       addToast("Failed to load budgets", "error");
     }
-  }, [selectedMonth]);
+  }, [selectedMonth, router, addToast]);
 
   useEffect(() => {
     const init = async () => {
       setIsLoading(true);
-      await Promise.all([fetchTransactions(), fetchBudgets()]);
-      setIsLoading(false);
+      try {
+        const res = await fetch("/api/auth/me");
+        if (!res.ok) return router.push("/login");
+
+        const data = await res.json();
+        setUser(data.user);
+
+        await Promise.all([fetchTransactions(), fetchBudgets()]);
+      } catch {
+        router.push("/login");
+      } finally {
+        setIsLoading(false);
+      }
     };
+
     init();
   }, [selectedMonth]);
 
@@ -64,7 +89,7 @@ export default function Home() {
 
   const categoryData = transactions.reduce((acc: any, transaction: any) => {
     const existing = acc.find(
-      (item: any) => item.category === transaction.category
+      (item: any) => item.category === transaction.category,
     );
     if (existing) existing.total += transaction.amount;
     else
@@ -73,11 +98,11 @@ export default function Home() {
   }, []);
 
   const monthlyExpenses = transactions
-    .filter((t: any) => t.date.startsWith(selectedMonth))
+    .filter((t: any) => isSameMonth(t.date))
     .reduce((sum: number, t: any) => sum + t.amount, 0);
 
   const monthlyCategoryData = transactions
-    .filter((t: any) => t.date.startsWith(selectedMonth))
+    .filter((t: any) => isSameMonth(t.date))
     .reduce((acc: any, t: any) => {
       const existing = acc.find((item: any) => item.category === t.category);
       if (existing) existing.total += t.amount;
@@ -89,20 +114,20 @@ export default function Home() {
     monthlyCategoryData.length > 0
       ? monthlyCategoryData.reduce(
           (prev: any, curr: any) => (curr.total > prev.total ? curr : prev),
-          { category: "None", total: 0 }
+          { category: "None", total: 0 },
         ).category
       : "None";
 
   const daysInMonth = new Date(
     parseInt(selectedMonth.split("-")[0]),
     parseInt(selectedMonth.split("-")[1]),
-    0
+    0,
   ).getDate();
   const avgDailySpend = daysInMonth > 0 ? monthlyExpenses / daysInMonth : 0;
 
   const selectedMonthLabel = new Date(selectedMonth + "-02").toLocaleString(
     "default",
-    { month: "long", year: "numeric" }
+    { month: "long", year: "numeric" },
   );
 
   const handleMonthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,7 +139,7 @@ export default function Home() {
       const actualSpending = transactions
         .filter(
           (t: any) =>
-            t.category === budget.category && t.date.startsWith(selectedMonth)
+            t.category === budget.category && isSameMonth(t.date),
         )
         .reduce((sum: number, transaction: any) => sum + transaction.amount, 0);
       return {
@@ -135,9 +160,13 @@ export default function Home() {
   return (
     <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-zinc-950 dark:to-zinc-900 min-h-screen transition-colors duration-300">
       <header className="bg-white dark:bg-zinc-900 shadow-sm dark:shadow-zinc-800/50 py-6 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-4 relative">
-          <div className="absolute top-0 right-4">
-            <ThemeToggle />
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center justify-between mb-8 sm:mb-0">
+            <div className="flex-1"></div>
+            <div className="flex items-center gap-4">
+              <ThemeToggle />
+              {user && <UserMenu user={user} />}
+            </div>
           </div>
           <div className="flex flex-col items-center justify-center space-y-6 mt-4 sm:mt-0">
             <div className="text-center">
@@ -179,7 +208,9 @@ export default function Home() {
                 <p className="text-3xl font-bold mt-2 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                   ₹{monthlyExpenses.toLocaleString()}
                 </p>
-                <p className="text-xs text-gray-400 dark:text-zinc-500 mt-1">{selectedMonthLabel}</p>
+                <p className="text-xs text-gray-400 dark:text-zinc-500 mt-1">
+                  {selectedMonthLabel}
+                </p>
               </div>
 
               <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-gray-100 dark:border-zinc-800/50">
@@ -189,7 +220,9 @@ export default function Home() {
                 <p className="text-3xl font-bold mt-2 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                   {topCategoryThisMonth}
                 </p>
-                <p className="text-xs text-gray-400 dark:text-zinc-500 mt-1">this month</p>
+                <p className="text-xs text-gray-400 dark:text-zinc-500 mt-1">
+                  this month
+                </p>
               </div>
 
               <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-gray-100 dark:border-zinc-800/50">
@@ -202,12 +235,12 @@ export default function Home() {
                       .filter(
                         (t: any) =>
                           t.category === budget.category &&
-                          t.date.startsWith(selectedMonth)
+                          isSameMonth(t.date),
                       )
                       .reduce(
                         (sum: number, transaction: any) =>
                           sum + transaction.amount,
-                        0
+                        0,
                       );
                     return actualSpending <= budget.amount;
                   }).length || 0}{" "}
@@ -215,7 +248,9 @@ export default function Home() {
                     categories
                   </span>
                 </p>
-                <p className="text-xs text-gray-400 dark:text-zinc-500 mt-1">this month</p>
+                <p className="text-xs text-gray-400 dark:text-zinc-500 mt-1">
+                  this month
+                </p>
               </div>
 
               <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-gray-100 dark:border-zinc-800/50">
@@ -228,12 +263,12 @@ export default function Home() {
                       .filter(
                         (t: any) =>
                           t.category === budget.category &&
-                          t.date.startsWith(selectedMonth)
+                          isSameMonth(t.date),
                       )
                       .reduce(
                         (sum: number, transaction: any) =>
                           sum + transaction.amount,
-                        0
+                        0,
                       );
                     return actualSpending > budget.amount;
                   }).length || 0}{" "}
@@ -250,7 +285,9 @@ export default function Home() {
                 <p className="text-3xl font-bold mt-2 bg-gradient-to-r from-violet-500 to-purple-600 bg-clip-text text-transparent">
                   ₹{Math.round(avgDailySpend).toLocaleString()}
                 </p>
-                <p className="text-xs text-gray-400 dark:text-zinc-500 mt-1">per day this month</p>
+                <p className="text-xs text-gray-400 dark:text-zinc-500 mt-1">
+                  per day this month
+                </p>
               </div>
             </div>
 
@@ -309,12 +346,12 @@ export default function Home() {
                     .filter(
                       (t: any) =>
                         t.category === budget.category &&
-                        t.date.startsWith(selectedMonth)
+                        isSameMonth(t.date),
                     )
                     .reduce(
                       (sum: number, transaction: any) =>
                         sum + transaction.amount,
-                      0
+                      0,
                     );
                   return {
                     category: budget.category,
@@ -417,7 +454,9 @@ export default function Home() {
         <div className="fixed inset-0 z-40 bg-white/60 dark:bg-zinc-950/60 backdrop-blur-sm flex items-center justify-center">
           <div className="flex flex-col items-center gap-3">
             <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
-            <p className="text-sm text-gray-600 dark:text-zinc-400 font-medium">Loading your data...</p>
+            <p className="text-sm text-gray-600 dark:text-zinc-400 font-medium">
+              Loading your data...
+            </p>
           </div>
         </div>
       )}
