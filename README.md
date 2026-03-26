@@ -1,12 +1,12 @@
-# 💰 Personal Finance Tracker
+# 💎 Finesse Finance
 
-A comprehensive web application designed to help users take control of their personal finances through intuitive tracking, intelligent budgeting, and insightful data visualization.
+A premium, modern Personal Finance Tracker designed for daily use. Take control of your money with intuitive tracking, intelligent budgeting, and stunning data visualizations.
 
-![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
-![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)
+![Next.js 15](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)
+![React 19](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)
+![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)
 ![MongoDB](https://img.shields.io/badge/MongoDB-6-green?style=for-the-badge&logo=mongodb)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-38B2AC?style=for-the-badge&logo=tailwind-css)
 
 ---
 
@@ -46,19 +46,24 @@ A comprehensive web application designed to help users take control of their per
 ## 🛠️ Tech Stack
 
 ### **Frontend**
-- **Next.js 14** - React framework with App Router for optimal performance
-- **React 18** - Modern React with hooks and concurrent features
-- **TypeScript** - Type-safe development experience
-- **Tailwind CSS** - Utility-first CSS framework for rapid UI development
-- **Recharts** - Powerful charting library for data visualisation
+- **Next.js 15** - React framework with the latest App Router standards.
+- **Tailwind CSS v4** - The next generation of utility-first CSS for high-performance styling.
+- **Lucide React** - A beautiful, consistent icon set.
+- **Recharts** - Dynamic, responsive data visualization.
+- **next-themes** - Robust theme management.
 
 ### **Backend & Database**
-- **Next.js API Routes** - Serverless API endpoints
-- **MongoDB** - NoSQL database for flexible data storage
+- **Next.js API Routes** - Clean serverless architecture.
+- **MongoDB & Mongoose** - Schema-based NoSQL storage for flexible financial records.
+- **TypeScript** - Full-stack type safety for reliable deployments.
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18.x or higher
+- A MongoDB cluster (Atlas or Local)
 
 ### Installation
 
@@ -79,10 +84,12 @@ A comprehensive web application designed to help users take control of their per
    MONGODB_URI=your_mongodb_connection_string
    ```
 
-4. **Run the development server**
+4. **Run Development Server**
    ```bash
    npm run dev
    ```
+   Open [http://localhost:3000](http://localhost:3000) to view the app!
+
 ---
 
 ## 🎨 Key Components
