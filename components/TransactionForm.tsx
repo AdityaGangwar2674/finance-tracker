@@ -5,7 +5,10 @@ import { Calendar, CreditCard, Tag, FileText, Send } from "lucide-react";
 
 export default function TransactionForm({ onAdd }: { onAdd?: () => void }) {
   const [amount, setAmount] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(() => {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
+  });
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,7 +35,10 @@ export default function TransactionForm({ onAdd }: { onAdd?: () => void }) {
 
       if (res.ok) {
         setAmount("");
-        setDate("");
+        setDate(() => {
+          const today = new Date();
+          return today.toISOString().split("T")[0];
+        });
         setDescription("");
         setCategory("");
         if (onAdd) onAdd();
@@ -55,21 +61,21 @@ export default function TransactionForm({ onAdd }: { onAdd?: () => void }) {
 
   return (
     <div className="w-full">
-      <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-zinc-100 mb-8 text-center">
         New Transaction
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300">
             Amount
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <CreditCard className="h-5 w-5 text-gray-400" />
+              <CreditCard className="h-5 w-5 text-gray-400 dark:text-zinc-500" />
             </div>
             <div className="absolute inset-y-0 left-11 flex items-center pointer-events-none">
-              <span className="text-gray-500">₹</span>
+              <span className="text-gray-500 dark:text-zinc-400">₹</span>
             </div>
             <input
               type="number"
@@ -77,36 +83,36 @@ export default function TransactionForm({ onAdd }: { onAdd?: () => void }) {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               required
-              className="block w-full pl-16 pr-3 py-3 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-blue-600 bg-gray-50 rounded-lg"
+              className="block w-full pl-16 pr-3 py-3 border-0 border-b-2 border-gray-200 dark:border-zinc-700 focus:ring-0 focus:border-blue-600 dark:focus:border-blue-400 bg-gray-50 dark:bg-zinc-800/50 dark:text-zinc-100 rounded-lg"
             />
           </div>
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300">
             Date
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Calendar className="h-5 w-5 text-gray-400" />
+              <Calendar className="h-5 w-5 text-gray-400 dark:text-zinc-500" />
             </div>
             <input
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
               required
-              className="block w-full pl-12 pr-3 py-3 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-blue-600 bg-gray-50 rounded-lg"
+              className="block w-full pl-12 pr-3 py-3 border-0 border-b-2 border-gray-200 dark:border-zinc-700 focus:ring-0 focus:border-blue-600 dark:focus:border-blue-400 bg-gray-50 dark:bg-zinc-800/50 dark:text-zinc-100 rounded-lg"
             />
           </div>
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300">
             Description
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FileText className="h-5 w-5 text-gray-400" />
+              <FileText className="h-5 w-5 text-gray-400 dark:text-zinc-500" />
             </div>
             <input
               type="text"
@@ -114,24 +120,24 @@ export default function TransactionForm({ onAdd }: { onAdd?: () => void }) {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
-              className="block w-full pl-12 pr-3 py-3 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-blue-600 bg-gray-50 rounded-lg"
+              className="block w-full pl-12 pr-3 py-3 border-0 border-b-2 border-gray-200 dark:border-zinc-700 focus:ring-0 focus:border-blue-600 dark:focus:border-blue-400 bg-gray-50 dark:bg-zinc-800/50 dark:text-zinc-100 rounded-lg"
             />
           </div>
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300">
             Category
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Tag className="h-5 w-5 text-gray-400" />
+              <Tag className="h-5 w-5 text-gray-400 dark:text-zinc-500" />
             </div>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               required
-              className="block w-full pl-12 pr-3 py-3 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-blue-600 bg-gray-50 rounded-lg appearance-none"
+              className="block w-full pl-12 pr-3 py-3 border-0 border-b-2 border-gray-200 dark:border-zinc-700 focus:ring-0 focus:border-blue-600 dark:focus:border-blue-400 bg-gray-50 dark:bg-zinc-800/50 dark:text-zinc-100 rounded-lg appearance-none"
             >
               <option value="">Select Category</option>
               {categories.map((cat) => (
@@ -142,7 +148,7 @@ export default function TransactionForm({ onAdd }: { onAdd?: () => void }) {
             </select>
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
               <svg
-                className="h-5 w-5 text-gray-400"
+                className="h-5 w-5 text-gray-400 dark:text-zinc-500"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
