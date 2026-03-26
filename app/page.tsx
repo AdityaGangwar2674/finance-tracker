@@ -297,9 +297,20 @@ export default function Home() {
                   <span className="w-2 h-6 bg-blue-600 rounded-full mr-2"></span>
                   Recent Transactions
                 </h3>
-                <div className="h-96 overflow-y-auto">
+                <div className="max-h-[600px] overflow-y-auto pr-1">
                   <TransactionList
-                    transactions={transactions.slice(0, 5)}
+                    transactions={[...transactions]
+                      .sort(
+                        (a, b) => {
+                          const dateA = new Date(a.date).getTime();
+                          const dateB = new Date(b.date).getTime();
+                          if (dateA === dateB) {
+                            return new Date(b.updatedAt || b.createdAt || 0).getTime() - new Date(a.updatedAt || a.createdAt || 0).getTime();
+                          }
+                          return dateB - dateA;
+                        }
+                      )
+                      .slice(0, 10)}
                     onDelete={() => {
                       fetchTransactions();
                       addToast("Transaction deleted", "info");
@@ -427,12 +438,21 @@ export default function Home() {
             </div>
 
             <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-zinc-800/50">
-              <h3 className="text-lg font-semibold text-gray-800 dark:text-zinc-100 mb-6 flex items-center">
-                <span className="w-2 h-6 bg-blue-600 rounded-full mr-2"></span>
-                All Transactions
-              </h3>
+              <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-zinc-100 flex items-center">
+                  <span className="w-2 h-6 bg-blue-600 rounded-full mr-2"></span>
+                  Transactions for {selectedMonthLabel}
+                </h3>
+                <input
+                  type="month"
+                  value={selectedMonth}
+                  onChange={handleMonthChange}
+                  className="mt-2 sm:mt-0 p-2 border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
+                />
+              </div>
+
               <TransactionList
-                transactions={transactions}
+                transactions={transactions.filter((t) => isSameMonth(t.date))}
                 onDelete={() => {
                   fetchTransactions();
                   addToast("Transaction deleted", "info");
