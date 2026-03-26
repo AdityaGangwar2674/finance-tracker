@@ -93,7 +93,7 @@ export default function LoginPage() {
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-600/20 transition-all active:scale-[0.98] flex items-center justify-center disabled:opacity-70"
             >
               {isLoading ? <Loader2 className="w-6 h-6 animate-spin mr-2" /> : <LogIn className="w-5 h-5 mr-2" />}
-              {isLoading ? "signing in..." : "Sign In"}
+              {isLoading ? "Signing In..." : "Sign In"}
             </button>
           </form>
 
