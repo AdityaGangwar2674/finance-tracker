@@ -289,12 +289,12 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-zinc-800/50 h-full overflow-auto">
+              <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-zinc-800/50 overflow-auto">
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-zinc-100 mb-4 flex items-center sticky top-0 bg-white dark:bg-zinc-900 pt-1 pb-2">
                   <span className="w-2 h-6 bg-blue-600 rounded-full mr-2"></span>
                   Recent Transactions
                 </h3>
-                <div className="max-h-150 overflow-y-auto pr-1">
+                <div className="max-h-100 overflow-y-auto pr-1">
                   <TransactionList
                     transactions={[...transactions]
                       .sort((a, b) => {
