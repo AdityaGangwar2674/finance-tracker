@@ -33,7 +33,7 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
   });
 
   const sortedData = [...enrichedData].sort(
-    (a, b) => b.percentage - a.percentage
+    (a, b) => b.percentage - a.percentage,
   );
 
   const totalBudget = sortedData.reduce((sum, item) => sum + item.budget, 0);
@@ -42,7 +42,7 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
   const overallPercentage =
     totalBudget > 0 ? Math.round((totalSpent / totalBudget) * 100) : 0;
   const overBudgetCategories = sortedData.filter(
-    (item) => item.actual > item.budget
+    (item) => item.actual > item.budget,
   ).length;
 
   const CustomTooltip = ({ active, payload }: any) => {
@@ -51,19 +51,21 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
       const overBudget = data.actual > data.budget;
 
       return (
-        <div className="bg-white p-4 shadow-lg rounded-lg border border-gray-100">
-          <p className="font-medium text-gray-900 mb-2">{data.category}</p>
+        <div className="bg-white dark:bg-zinc-800 p-4 shadow-lg rounded-lg border border-gray-100 dark:border-zinc-700">
+          <p className="font-medium text-gray-900 dark:text-zinc-100 mb-2">
+            {data.category}
+          </p>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-gray-500">Budget</p>
-              <p className="text-lg font-bold text-blue-600">
+              <p className="text-sm text-gray-500 dark:text-zinc-400">Budget</p>
+              <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
                 ₹{data.budget.toLocaleString()}
               </p>
             </div>
 
             <div>
-              <p className="text-sm text-gray-500">Actual</p>
+              <p className="text-sm text-gray-500 dark:text-zinc-400">Actual</p>
               <p
                 className={`text-lg font-bold ${
                   overBudget ? "text-red-600" : "text-green-600"
@@ -74,9 +76,11 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
             </div>
           </div>
 
-          <div className="mt-2 pt-2 border-t border-gray-100">
+          <div className="mt-2 pt-2 border-t border-gray-100 dark:border-zinc-700">
             <p className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Status:</span>
+              <span className="text-sm text-gray-600 dark:text-zinc-300">
+                Status:
+              </span>
               <span
                 className={`text-sm font-medium ${
                   overBudget ? "text-red-600" : "text-green-600"
@@ -88,7 +92,9 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
               </span>
             </p>
             <p className="flex justify-between items-center mt-1">
-              <span className="text-sm text-gray-600">Used:</span>
+              <span className="text-sm text-gray-600 dark:text-zinc-300">
+                Used:
+              </span>
               <span
                 className={`text-sm font-medium ${
                   data.percentage > 100 ? "text-red-600" : "text-blue-600"
@@ -113,14 +119,16 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
           <li
             key={`item-${index}`}
             className={`flex items-center cursor-pointer px-2 py-1 rounded-full transition text-xs
-              ${activeIndex === index ? "bg-gray-100" : "hover:bg-gray-50"}`}
+              ${activeIndex === index ? "bg-gray-100 dark:bg-zinc-800" : "hover:bg-gray-50 dark:hover:bg-zinc-800/50"}`}
             onClick={() => setActiveIndex(activeIndex === index ? null : index)}
           >
             <div
               className="w-2 h-2 rounded-full mr-1"
               style={{ backgroundColor: entry.color }}
             />
-            <span className="font-medium text-gray-700">{entry.value}</span>
+            <span className="font-medium text-gray-700 dark:text-zinc-300">
+              {entry.value}
+            </span>
           </li>
         ))}
       </ul>
@@ -136,7 +144,7 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
     const cappedPercentage = Math.min(percentage, 100);
 
     return (
-      <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
+      <div className="w-full bg-gray-200 dark:bg-zinc-700 rounded-full h-2 mt-1">
         <div
           className={`${barColor} h-2 rounded-full`}
           style={{ width: `${cappedPercentage}%` }}
@@ -148,17 +156,19 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
   return (
     <div className="w-full h-full">
       {data.length === 0 ? (
-        <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg border border-dashed border-gray-300">
-          <p className="text-gray-500">No budget data available</p>
+        <div className="h-64 flex items-center justify-center bg-gray-50 dark:bg-zinc-800/30 rounded-lg border border-dashed border-gray-300 dark:border-zinc-700">
+          <p className="text-gray-500 dark:text-zinc-400">
+            No budget data available
+          </p>
         </div>
       ) : (
         <div className="flex flex-col h-full">
           <div className="grid grid-cols-2 gap-2 mb-3">
-            <div className="text-center p-2 bg-blue-50 rounded-lg shadow-sm border border-blue-100">
-              <p className="text-xs font-medium text-blue-600 uppercase tracking-wide">
+            <div className="text-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg shadow-sm border border-blue-100 dark:border-blue-800/50">
+              <p className="text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wide">
                 Total Budget
               </p>
-              <p className="text-lg font-bold text-blue-800">
+              <p className="text-lg font-bold text-blue-800 dark:text-blue-300">
                 ₹{totalBudget.toLocaleString()}
               </p>
             </div>
@@ -166,20 +176,24 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
             <div
               className={`text-center p-2 rounded-lg shadow-sm border ${
                 totalSpent > totalBudget
-                  ? "bg-red-50 border-red-100"
-                  : "bg-green-50 border-green-100"
+                  ? "bg-red-50 dark:bg-red-900/20 border-red-100 dark:border-red-800/50"
+                  : "bg-green-50 dark:bg-green-900/20 border-green-100 dark:border-green-800/50"
               }`}
             >
               <p
                 className={`text-xs font-medium uppercase tracking-wide ${
-                  totalSpent > totalBudget ? "text-red-600" : "text-green-600"
+                  totalSpent > totalBudget
+                    ? "text-red-600 dark:text-red-400"
+                    : "text-green-600 dark:text-green-400"
                 }`}
               >
                 Total Spent
               </p>
               <p
                 className={`text-lg font-bold ${
-                  totalSpent > totalBudget ? "text-red-800" : "text-green-800"
+                  totalSpent > totalBudget
+                    ? "text-red-800 dark:text-red-300"
+                    : "text-green-800 dark:text-green-300"
                 }`}
               >
                 ₹{totalSpent.toLocaleString()}
@@ -188,8 +202,8 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
           </div>
 
           <div className="grid grid-cols-2 gap-2 mb-3">
-            <div className="text-center p-2 bg-gray-50 rounded-lg shadow-sm border border-gray-100">
-              <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">
+            <div className="text-center p-2 bg-gray-50 dark:bg-zinc-800/50 rounded-lg shadow-sm border border-gray-100 dark:border-zinc-700">
+              <p className="text-xs font-medium text-gray-600 dark:text-zinc-400 uppercase tracking-wide">
                 Remaining
               </p>
               <p
@@ -204,8 +218,8 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
               </p>
             </div>
 
-            <div className="text-center p-2 bg-purple-50 rounded-lg shadow-sm border border-purple-100">
-              <p className="text-xs font-medium text-purple-600 uppercase tracking-wide">
+            <div className="text-center p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg shadow-sm border border-purple-100 dark:border-purple-800/50">
+              <p className="text-xs font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wide">
                 Budget Usage
               </p>
               <p
@@ -290,49 +304,49 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
           </div>
 
           <div className="grid grid-cols-3 gap-2 mt-3">
-            <div className="text-center p-2 rounded-lg bg-amber-50 border border-amber-100">
-              <p className="text-xs font-medium text-amber-600 uppercase tracking-wide">
+            <div className="text-center p-2 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/50">
+              <p className="text-xs font-medium text-amber-600 dark:text-amber-400 uppercase tracking-wide">
                 Over Budget
               </p>
-              <p className="text-base font-bold text-amber-700">
+              <p className="text-base font-bold text-amber-700 dark:text-amber-300">
                 {overBudgetCategories}/{sortedData.length}
               </p>
             </div>
 
-            <div className="text-center p-2 rounded-lg bg-green-50 border border-green-100">
-              <p className="text-xs font-medium text-green-600 uppercase tracking-wide">
+            <div className="text-center p-2 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800/50">
+              <p className="text-xs font-medium text-green-600 dark:text-green-400 uppercase tracking-wide">
                 Most Efficient
               </p>
               <p
-                className="text-base font-bold text-green-700 truncate"
+                className="text-base font-bold text-green-700 dark:text-green-300 truncate"
                 title={
                   sortedData.length > 0
                     ? [...sortedData].sort(
-                        (a, b) => a.percentage - b.percentage
+                        (a, b) => a.percentage - b.percentage,
                       )[0].category
                     : "N/A"
                 }
               >
                 {sortedData.length > 0
                   ? [...sortedData].sort(
-                      (a, b) => a.percentage - b.percentage
+                      (a, b) => a.percentage - b.percentage,
                     )[0].category
                   : "N/A"}
               </p>
             </div>
 
-            <div className="text-center p-2 rounded-lg bg-red-50 border border-red-100">
-              <p className="text-xs font-medium text-red-600 uppercase tracking-wide">
+            <div className="text-center p-2 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/50">
+              <p className="text-xs font-medium text-red-600 dark:text-red-400 uppercase tracking-wide">
                 Highest Overspend
               </p>
               <p
-                className="text-base font-bold text-red-700 truncate"
+                className="text-base font-bold text-red-700 dark:text-red-300 truncate"
                 title={
                   sortedData.some((item) => item.actual > item.budget)
                     ? [...sortedData]
                         .filter((item) => item.actual > item.budget)
                         .sort(
-                          (a, b) => b.actual - b.budget - (a.actual - a.budget)
+                          (a, b) => b.actual - b.budget - (a.actual - a.budget),
                         )[0].category
                     : "None"
                 }
@@ -341,7 +355,7 @@ export default function BudgetVsActualChart({ data }: { data: BudgetData[] }) {
                   ? [...sortedData]
                       .filter((item) => item.actual > item.budget)
                       .sort(
-                        (a, b) => b.actual - b.budget - (a.actual - a.budget)
+                        (a, b) => b.actual - b.budget - (a.actual - a.budget),
                       )[0].category
                   : "None"}
               </p>
