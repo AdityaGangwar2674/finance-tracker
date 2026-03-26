@@ -43,9 +43,9 @@ export default function MonthlyChart({
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-4 shadow-lg rounded-lg border border-gray-100">
-          <p className="text-gray-600">{`${label}`}</p>
-          <p className="text-lg font-bold text-blue-600">{`₹${payload[0].value.toLocaleString()}`}</p>
+        <div className="bg-white dark:bg-zinc-800 p-4 shadow-lg rounded-lg border border-gray-100 dark:border-zinc-700">
+          <p className="text-gray-600 dark:text-zinc-300">{`${label}`}</p>
+          <p className="text-lg font-bold text-blue-600 dark:text-blue-400">{`₹${payload[0].value.toLocaleString()}`}</p>
         </div>
       );
     }
@@ -59,8 +59,8 @@ export default function MonthlyChart({
   return (
     <div className="w-full h-full">
       {data.length === 0 ? (
-        <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg border border-dashed border-gray-300">
-          <p className="text-gray-500">No data available</p>
+        <div className="h-64 flex items-center justify-center bg-gray-50 dark:bg-zinc-800/30 rounded-lg border border-dashed border-gray-300 dark:border-zinc-700">
+          <p className="text-gray-500 dark:text-zinc-400">No data available</p>
         </div>
       ) : (
         <>
@@ -122,10 +122,10 @@ export default function MonthlyChart({
           </ResponsiveContainer>
 
           <div className="flex justify-end mt-2">
-            <div className="flex items-center text-sm text-gray-500">
-              <span className="inline-block w-3 h-0.5 bg-gray-400 mr-1.5 border-dashed"></span>
+            <div className="flex items-center text-sm text-gray-500 dark:text-zinc-400">
+              <span className="inline-block w-3 h-0.5 bg-gray-400 dark:bg-zinc-500 mr-1.5 border-dashed"></span>
               <span>Monthly Average: </span>
-              <span className="ml-1 font-semibold">
+              <span className="ml-1 font-semibold text-gray-700 dark:text-zinc-200">
                 ₹{average.toLocaleString()}
               </span>
             </div>
