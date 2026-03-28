@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import TransactionForm from "@/components/TransactionForm";
 import TransactionList from "@/components/TransactionList";
-import MonthlyChart from "@/components/MonthlyCharts";
+import FinancialChart from "@/components/FinancialChart";
 import CategoryPieChart from "@/components/CategoryPieCharts";
 import BudgetForm from "@/components/BudgetForm";
 import BudgetVsActualChart from "@/components/BudgetVsActualChart";
@@ -320,13 +320,11 @@ export default function Home() {
               </div>
 
               <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-zinc-800/50">
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-zinc-100 mb-4 flex items-center">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-zinc-100 mb-6 flex items-center">
                   <span className="w-2 h-6 bg-blue-600 rounded-full mr-2"></span>
-                  Monthly Expenses
+                  Financial Activity
                 </h3>
-                <div className="mt-15">
-                  <MonthlyChart data={monthlyData} />
-                </div>
+                <FinancialChart transactions={transactions} />
               </div>
             </div>
 
@@ -401,9 +399,9 @@ export default function Home() {
             <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-zinc-800/50">
               <h3 className="text-lg font-semibold text-gray-800 dark:text-zinc-100 mb-6 flex items-center">
                 <span className="w-2 h-6 bg-blue-600 rounded-full mr-2"></span>
-                Monthly Spending Trends
+                Spending Trends & Breakdown
               </h3>
-              <MonthlyChart data={monthlyData} />
+              <FinancialChart transactions={transactions} initialView="year" />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
