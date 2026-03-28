@@ -172,8 +172,12 @@ export default function FinancialChart({ transactions, initialView = "month" }: 
                 dataKey="label" 
                 axisLine={false} 
                 tickLine={false} 
+                angle={viewType === "year" ? -45 : 0}
+                textAnchor={viewType === "year" ? "end" : "middle"}
+                height={50}
                 tick={{ fill: "#94a3b8", fontSize: 11, fontWeight: 500 }}
                 interval={viewType === "month" ? 2 : 0}
+                dx={viewType === "year" ? -2 : 0}
               />
               <YAxis 
                 axisLine={false} 
