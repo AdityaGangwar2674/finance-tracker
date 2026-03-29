@@ -272,9 +272,6 @@ export default function Home() {
                   <span className="text-gray-400 text-lg font-normal">
                     categories
                   </span>
-                  <p className="text-xs text-gray-400 dark:text-zinc-500 mt-1">
-                  this month
-                </p>
                 </p>
               </div>
 
